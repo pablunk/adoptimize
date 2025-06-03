@@ -1,0 +1,26 @@
+{
+  "name": "React Digital Media Optimizer",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-18",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18" // O la versión de Node.js que prefieras
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss" // Para Tailwind CSS
+      ]
+    }
+  },
+  "postCreateCommand": "npm install", // O "yarn install" si usas Yarn
+  "portsAttributes": {
+    "3000": { // Puerto por defecto de React Development Server
+      "label": "Aplicación React",
+      "onAutoForward": "notify"
+    }
+  },
+  "forwardPorts": [3000]
+}
