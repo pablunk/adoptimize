@@ -1,0 +1,688 @@
+import React, { useState } from 'react';
+import { Home, Target, Image, DollarSign, BarChart2, Menu, X, Upload, Plus, Edit, Trash2, Save, Send } from 'lucide-react';
+
+// Main App Component
+const App = () => {
+  const [activeSection, setActiveSection] = useState('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const renderSection = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return <Dashboard />;
+      case 'media-optimization':
+        return <MediaOptimization />;
+      case 'creatives':
+        return <Creatives />;
+      case 'budgeting':
+        return <Budgeting />;
+      case 'analytics':
+        return <Analytics />;
+      default:
+        return <Dashboard />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-100 font-sans text-gray-800">
+      {/* Header */}
+      <header className="bg-white shadow-sm p-4 flex items-center justify-between md:justify-start sticky top-0 z-10">
+        <button
+          className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        >
+          {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+        <h1 className="text-xl md:text-2xl font-bold text-indigo-700 ml-4">
+          Optimizador de Medios Digitales
+        </h1>
+      </header>
+
+      {/* Main Content Area */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar Navigation */}
+        <aside
+          className={`fixed inset-y-0 left-0 bg-indigo-800 text-white w-64 p-4 z-20 transform ${
+            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          } md:relative md:translate-x-0 transition-transform duration-300 ease-in-out flex-shrink-0 md:flex md:flex-col`}
+        >
+          <nav className="flex flex-col space-y-2 mt-4">
+            <NavItem
+              icon={<Home size={20} />}
+              label="Panel de Control"
+              isActive={activeSection === 'dashboard'}
+              onClick={() => {
+                setActiveSection('dashboard');
+                setIsSidebarOpen(false);
+              }}
+            />
+            <NavItem
+              icon={<Target size={20} />}
+              label="Optimización de Medios"
+              isActive={activeSection === 'media-optimization'}
+              onClick={() => {
+                setActiveSection('media-optimization');
+                setIsSidebarOpen(false);
+              }}
+            />
+            <NavItem
+              icon={<Image size={20} />}
+              label="Creatividades"
+              isActive={activeSection === 'creatives'}
+              onClick={() => {
+                setActiveSection('creatives');
+                setIsSidebarOpen(false);
+              }}
+            />
+            <NavItem
+              icon={<DollarSign size={20} />}
+              label="Presupuestos"
+              isActive={activeSection === 'budgeting'}
+              onClick={() => {
+                setActiveSection('budgeting');
+                setIsSidebarOpen(false);
+              }}
+            />
+            <NavItem
+              icon={<BarChart2 size={20} />}
+              label="Analítica Productiva"
+              isActive={activeSection === 'analytics'}
+              onClick={() => {
+                setActiveSection('analytics');
+                setIsSidebarOpen(false);
+              }}
+            />
+          </nav>
+        </aside>
+
+        {/* Content Area */}
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+          {renderSection()}
+        </main>
+      </div>
+    </div>
+  );
+};
+
+// Nav Item Component
+const NavItem = ({ icon, label, isActive, onClick }) => (
+  <button
+    className={`flex items-center space-x-3 p-3 rounded-lg text-left w-full transition-colors duration-200 ${
+      isActive ? 'bg-indigo-700 text-white' : 'hover:bg-indigo-700 hover:text-white text-indigo-200'
+    }`}
+    onClick={onClick}
+  >
+    {icon}
+    <span className="text-lg">{label}</span>
+  </button>
+);
+
+// Card Component for consistent styling
+const Card = ({ title, children }) => (
+  <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+    <h2 className="text-2xl font-semibold text-indigo-700 mb-4 border-b pb-2">{title}</h2>
+    {children}
+  </div>
+);
+
+// Dashboard Component
+const Dashboard = () => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <Card title="Resumen de Campañas">
+      <p className="text-gray-600">
+        Bienvenido a tu panel de control. Aquí verás un resumen de tus campañas activas, rendimiento clave y alertas importantes.
+      </p>
+      <div className="mt-4 space-y-2">
+        <div className="flex justify-between items-center bg-blue-50 p-3 rounded-md">
+          <span className="font-medium">Campaña Q2 2025</span>
+          <span className="text-green-600 font-bold">ROI: +15%</span>
+        </div>
+        <div className="flex justify-between items-center bg-yellow-50 p-3 rounded-md">
+          <span className="font-medium">Lanzamiento Producto X</span>
+          <span className="text-orange-600 font-bold">Presupuesto: 80% usado</span>
+        </div>
+      </div>
+    </Card>
+
+    <Card title="Métricas Clave">
+      <div className="grid grid-cols-2 gap-4 text-center">
+        <div className="bg-green-50 p-4 rounded-md">
+          <p className="text-sm text-gray-500">Impresiones</p>
+          <p className="text-3xl font-bold text-green-700">1.2M</p>
+        </div>
+        <div className="bg-blue-50 p-4 rounded-md">
+          <p className="text-sm text-gray-500">Clics</p>
+          <p className="text-3xl font-bold text-blue-700">85K</p>
+        </div>
+        <div className="bg-purple-50 p-4 rounded-md">
+          <p className="text-sm text-gray-500">Conversiones</p>
+          <p className="text-3xl font-bold text-purple-700">3.2K</p>
+        </div>
+        <div className="bg-red-50 p-4 rounded-md">
+          <p className="text-sm text-gray-500">Gasto Total</p>
+          <p className="text-3xl font-bold text-red-700">$15,000</p>
+        </div>
+      </div>
+    </Card>
+
+    <Card title="Alertas y Recomendaciones">
+      <ul className="list-disc list-inside text-gray-600 space-y-2">
+        <li>Campaña "Verano 2025" tiene un CTR bajo. Considera actualizar creatividades.</li>
+        <li>Presupuesto de Google Ads para "Remarketing" está por agotarse.</li>
+        <li>Nueva audiencia potencial identificada en Facebook para el producto Y.</li>
+      </ul>
+    </Card>
+  </div>
+);
+
+// Media Optimization Component
+const MediaOptimization = () => {
+  const [platforms, setPlatforms] = useState([
+    { id: 1, name: 'Google Ads', status: 'Activo', budget: 5000, target: 'Global' },
+    { id: 2, name: 'Facebook Ads', status: 'Activo', budget: 3000, target: 'Demografía' },
+    { id: 3, name: 'LinkedIn Ads', status: 'Inactivo', budget: 1000, target: 'B2B' },
+  ]);
+
+  const [newPlatform, setNewPlatform] = useState({ name: '', budget: '', target: '' });
+  const [editingPlatformId, setEditingPlatformId] = useState(null);
+
+  const handleAddPlatform = () => {
+    if (newPlatform.name && newPlatform.budget && newPlatform.target) {
+      setPlatforms([...platforms, { id: platforms.length + 1, status: 'Activo', ...newPlatform }]);
+      setNewPlatform({ name: '', budget: '', target: '' });
+    }
+  };
+
+  const handleEditPlatform = (id) => {
+    setEditingPlatformId(id);
+    const platformToEdit = platforms.find(p => p.id === id);
+    if (platformToEdit) {
+      setNewPlatform({ name: platformToEdit.name, budget: platformToEdit.budget, target: platformToEdit.target });
+    }
+  };
+
+  const handleSavePlatform = () => {
+    setPlatforms(platforms.map(p =>
+      p.id === editingPlatformId
+        ? { ...p, name: newPlatform.name, budget: parseFloat(newPlatform.budget), target: newPlatform.target }
+        : p
+    ));
+    setEditingPlatformId(null);
+    setNewPlatform({ name: '', budget: '', target: '' });
+  };
+
+  const handleDeletePlatform = (id) => {
+    setPlatforms(platforms.filter(p => p.id !== id));
+  };
+
+  return (
+    <Card title="Optimización de Medios">
+      <p className="text-gray-600 mb-4">
+        Gestiona tus plataformas publicitarias, define audiencias y asigna presupuestos iniciales.
+      </p>
+
+      <div className="mb-6 bg-indigo-50 p-4 rounded-lg shadow-inner">
+        <h3 className="text-lg font-semibold text-indigo-800 mb-3">
+          {editingPlatformId ? 'Editar Plataforma' : 'Añadir Nueva Plataforma'}
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="Nombre de la Plataforma (Ej: Google Ads)"
+            className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newPlatform.name}
+            onChange={(e) => setNewPlatform({ ...newPlatform, name: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Presupuesto Inicial"
+            className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newPlatform.budget}
+            onChange={(e) => setNewPlatform({ ...newPlatform, budget: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Audiencia Objetivo (Ej: Demografía, Intereses)"
+            className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newPlatform.target}
+            onChange={(e) => setNewPlatform({ ...newPlatform, target: e.target.value })}
+          />
+        </div>
+        <button
+          className="flex items-center justify-center bg-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200"
+          onClick={editingPlatformId ? handleSavePlatform : handleAddPlatform}
+        >
+          {editingPlatformId ? <Save size={20} className="mr-2" /> : <Plus size={20} className="mr-2" />}
+          {editingPlatformId ? 'Guardar Cambios' : 'Añadir Plataforma'}
+        </button>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white rounded-lg shadow-md">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 rounded-tl-lg">Plataforma</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Estado</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Presupuesto</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Objetivo</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 rounded-tr-lg">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {platforms.map((platform) => (
+              <tr key={platform.id} className="border-b last:border-b-0 hover:bg-gray-50">
+                <td className="py-3 px-4 text-gray-800">{platform.name}</td>
+                <td className="py-3 px-4">
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    platform.status === 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  }`}>
+                    {platform.status}
+                  </span>
+                </td>
+                <td className="py-3 px-4 text-gray-800">${platform.budget.toLocaleString()}</td>
+                <td className="py-3 px-4 text-gray-800">{platform.target}</td>
+                <td className="py-3 px-4 flex space-x-2">
+                  <button
+                    className="p-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+                    onClick={() => handleEditPlatform(platform.id)}
+                  >
+                    <Edit size={18} />
+                  </button>
+                  <button
+                    className="p-2 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                    onClick={() => handleDeletePlatform(platform.id)}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+};
+
+// Creatives Component
+const Creatives = () => {
+  const [creatives, setCreatives] = useState([
+    { id: 1, name: 'Banner Verano', type: 'Imagen', status: 'Aprobado', platform: 'Google Ads' },
+    { id: 2, name: 'Video Promocional', type: 'Video', status: 'Pendiente', platform: 'Facebook Ads' },
+    { id: 3, name: 'Anuncio de Texto', type: 'Texto', status: 'Aprobado', platform: 'LinkedIn Ads' },
+  ]);
+
+  const [newCreative, setNewCreative] = useState({ name: '', type: '', platform: '' });
+  const [editingCreativeId, setEditingCreativeId] = useState(null);
+
+  const handleAddCreative = () => {
+    if (newCreative.name && newCreative.type && newCreative.platform) {
+      setCreatives([...creatives, { id: creatives.length + 1, status: 'Pendiente', ...newCreative }]);
+      setNewCreative({ name: '', type: '', platform: '' });
+    }
+  };
+
+  const handleEditCreative = (id) => {
+    setEditingCreativeId(id);
+    const creativeToEdit = creatives.find(c => c.id === id);
+    if (creativeToEdit) {
+      setNewCreative({ name: creativeToEdit.name, type: creativeToEdit.type, platform: creativeToEdit.platform });
+    }
+  };
+
+  const handleSaveCreative = () => {
+    setCreatives(creatives.map(c =>
+      c.id === editingCreativeId
+        ? { ...c, name: newCreative.name, type: newCreative.type, platform: newCreative.platform }
+        : c
+    ));
+    setEditingCreativeId(null);
+    setNewCreative({ name: '', type: '', platform: '' });
+  };
+
+  const handleDeleteCreative = (id) => {
+    setCreatives(creatives.filter(c => c.id !== id));
+  };
+
+  return (
+    <Card title="Gestión de Creatividades">
+      <p className="text-gray-600 mb-4">
+        Sube y gestiona tus creatividades (imágenes, videos, textos) para tus campañas.
+      </p>
+
+      <div className="mb-6 bg-indigo-50 p-4 rounded-lg shadow-inner">
+        <h3 className="text-lg font-semibold text-indigo-800 mb-3">
+          {editingCreativeId ? 'Editar Creatividad' : 'Añadir Nueva Creatividad'}
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="Nombre de la Creatividad"
+            className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newCreative.name}
+            onChange={(e) => setNewCreative({ ...newCreative, name: e.target.value })}
+          />
+          <select
+            className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newCreative.type}
+            onChange={(e) => setNewCreative({ ...newCreative, type: e.target.value })}
+          >
+            <option value="">Selecciona Tipo</option>
+            <option value="Imagen">Imagen</option>
+            <option value="Video">Video</option>
+            <option value="Texto">Texto</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Plataforma (Ej: Google Ads)"
+            className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newCreative.platform}
+            onChange={(e) => setNewCreative({ ...newCreative, platform: e.target.value })}
+          />
+        </div>
+        <button
+          className="flex items-center justify-center bg-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200"
+          onClick={editingCreativeId ? handleSaveCreative : handleAddCreative}
+        >
+          {editingCreativeId ? <Save size={20} className="mr-2" /> : <Plus size={20} className="mr-2" />}
+          {editingCreativeId ? 'Guardar Cambios' : 'Añadir Creatividad'}
+        </button>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white rounded-lg shadow-md">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 rounded-tl-lg">Nombre</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Tipo</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Plataforma</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Estado</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 rounded-tr-lg">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {creatives.map((creative) => (
+              <tr key={creative.id} className="border-b last:border-b-0 hover:bg-gray-50">
+                <td className="py-3 px-4 text-gray-800">{creative.name}</td>
+                <td className="py-3 px-4 text-gray-800">{creative.type}</td>
+                <td className="py-3 px-4 text-gray-800">{creative.platform}</td>
+                <td className="py-3 px-4">
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    creative.status === 'Aprobado' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {creative.status}
+                  </span>
+                </td>
+                <td className="py-3 px-4 flex space-x-2">
+                  <button
+                    className="p-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+                    onClick={() => handleEditCreative(creative.id)}
+                  >
+                    <Edit size={18} />
+                  </button>
+                  <button
+                    className="p-2 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                    onClick={() => handleDeleteCreative(creative.id)}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+};
+
+// Budgeting Component
+const Budgeting = () => {
+  const [campaigns, setCampaigns] = useState([
+    { id: 1, name: 'Campaña Primavera', totalBudget: 10000, spent: 7500, status: 'Activa', desiredCPI: 10 },
+    { id: 2, name: 'Campaña Navidad', totalBudget: 15000, spent: 12000, status: 'Activa', desiredCPI: 8 },
+    { id: 3, name: 'Campaña Lanzamiento App', totalBudget: 5000, spent: 2000, status: 'Pendiente', desiredCPI: 12 },
+  ]);
+
+  const [newCampaign, setNewCampaign] = useState({ name: '', totalBudget: '', desiredCPI: '' });
+  const [editingCampaignId, setEditingCampaignId] = useState(null);
+
+  const handleAddCampaign = () => {
+    if (newCampaign.name && newCampaign.totalBudget && newCampaign.desiredCPI) {
+      setCampaigns([...campaigns, {
+        id: campaigns.length + 1,
+        spent: 0, // Initial spent is 0
+        status: 'Pendiente',
+        name: newCampaign.name,
+        totalBudget: parseFloat(newCampaign.totalBudget),
+        desiredCPI: parseFloat(newCampaign.desiredCPI)
+      }]);
+      setNewCampaign({ name: '', totalBudget: '', desiredCPI: '' });
+    }
+  };
+
+  const handleEditCampaign = (id) => {
+    setEditingCampaignId(id);
+    const campaignToEdit = campaigns.find(c => c.id === id);
+    if (campaignToEdit) {
+      setNewCampaign({
+        name: campaignToEdit.name,
+        totalBudget: campaignToEdit.totalBudget,
+        desiredCPI: campaignToEdit.desiredCPI
+      });
+    }
+  };
+
+  const handleSaveCampaign = () => {
+    setCampaigns(campaigns.map(c =>
+      c.id === editingCampaignId
+        ? {
+            ...c,
+            name: newCampaign.name,
+            totalBudget: parseFloat(newCampaign.totalBudget),
+            desiredCPI: parseFloat(newCampaign.desiredCPI)
+          }
+        : c
+    ));
+    setEditingCampaignId(null);
+    setNewCampaign({ name: '', totalBudget: '', desiredCPI: '' });
+  };
+
+  const handleDeleteCampaign = (id) => {
+    setCampaigns(campaigns.filter(c => c.id !== id));
+  };
+
+  const getBudgetProgress = (spent, total) => (spent / total) * 100;
+
+  // Calculate potential registrations based on total budget and desired CPI
+  const getPotentialRegistrations = (totalBudget, desiredCPI) => {
+    if (desiredCPI > 0) {
+      return (totalBudget / desiredCPI).toFixed(0); // Round to whole number
+    }
+    return 'N/A';
+  };
+
+  return (
+    <Card title="Gestión de Presupuestos">
+      <p className="text-gray-600 mb-4">
+        Define y monitorea los presupuestos de tus campañas y plataformas.
+        También puedes simular la asignación de presupuesto en base a un costo por inscrito deseado.
+      </p>
+
+      <div className="mb-6 bg-indigo-50 p-4 rounded-lg shadow-inner">
+        <h3 className="text-lg font-semibold text-indigo-800 mb-3">
+          {editingCampaignId ? 'Editar Campaña' : 'Añadir Nueva Campaña'}
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="Nombre de la Campaña"
+            className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newCampaign.name}
+            onChange={(e) => setNewCampaign({ ...newCampaign, name: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Presupuesto Total"
+            className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newCampaign.totalBudget}
+            onChange={(e) => setNewCampaign({ ...newCampaign, totalBudget: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Costo por Inscrito Deseado (Ej: 10)"
+            className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newCampaign.desiredCPI}
+            onChange={(e) => setNewCampaign({ ...newCampaign, desiredCPI: e.target.value })}
+          />
+        </div>
+        <button
+          className="flex items-center justify-center bg-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200"
+          onClick={editingCampaignId ? handleSaveCampaign : handleAddCampaign}
+        >
+          {editingCampaignId ? <Save size={20} className="mr-2" /> : <Plus size={20} className="mr-2" />}
+          {editingCampaignId ? 'Guardar Cambios' : 'Añadir Campaña'}
+        </button>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white rounded-lg shadow-md">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 rounded-tl-lg">Campaña</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Presupuesto Total</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Gastado</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Progreso</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">CPI Deseado</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Inscritos Potenciales</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Estado</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 rounded-tr-lg">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {campaigns.map((campaign) => (
+              <tr key={campaign.id} className="border-b last:border-b-0 hover:bg-gray-50">
+                <td className="py-3 px-4 text-gray-800">{campaign.name}</td>
+                <td className="py-3 px-4 text-gray-800">${campaign.totalBudget.toLocaleString()}</td>
+                <td className="py-3 px-4 text-gray-800">${campaign.spent.toLocaleString()}</td>
+                <td className="py-3 px-4">
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                      className="bg-indigo-600 h-2.5 rounded-full"
+                      style={{ width: `${getBudgetProgress(campaign.spent, campaign.totalBudget)}%` }}
+                    ></div>
+                  </div>
+                  <span className="text-xs text-gray-500 mt-1 block">
+                    {getBudgetProgress(campaign.spent, campaign.totalBudget).toFixed(1)}%
+                  </span>
+                </td>
+                <td className="py-3 px-4 text-gray-800">
+                  {campaign.desiredCPI ? `$${campaign.desiredCPI.toFixed(2)}` : 'N/A'}
+                </td>
+                <td className="py-3 px-4 text-gray-800">
+                  {getPotentialRegistrations(campaign.totalBudget, campaign.desiredCPI)}
+                </td>
+                <td className="py-3 px-4">
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    campaign.status === 'Activa' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {campaign.status}
+                  </span>
+                </td>
+                <td className="py-3 px-4 flex space-x-2">
+                  <button
+                    className="p-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+                    onClick={() => handleEditCampaign(campaign.id)}
+                  >
+                    <Edit size={18} />
+                  </button>
+                  <button
+                    className="p-2 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                    onClick={() => handleDeleteCampaign(campaign.id)}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+};
+
+// Analytics Component
+const Analytics = () => {
+  const [selectedMetric, setSelectedMetric] = useState('roi');
+  const [dataRange, setDataRange] = useState('last7days');
+
+  const getChartData = () => {
+    // Placeholder for actual chart data based on selectedMetric and dataRange
+    // In a real app, this would fetch data from a backend or process local data.
+    switch (selectedMetric) {
+      case 'roi':
+        return 'Gráfico de ROI (Retorno de Inversión)';
+      case 'ctr':
+        return 'Gráfico de CTR (Click-Through Rate)';
+      case 'conversions':
+        return 'Gráfico de Conversiones';
+      default:
+        return 'Selecciona una métrica para ver el gráfico.';
+    }
+  };
+
+  return (
+    <Card title="Analítica Productiva">
+      <p className="text-gray-600 mb-4">
+        Visualiza el rendimiento de tus campañas con métricas clave y gráficos.
+      </p>
+
+      <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6 bg-indigo-50 p-4 rounded-lg shadow-inner">
+        <label htmlFor="metric-select" className="font-medium text-indigo-800">Métrica:</label>
+        <select
+          id="metric-select"
+          className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 md:w-auto w-full"
+          value={selectedMetric}
+          onChange={(e) => setSelectedMetric(e.target.value)}
+        >
+          <option value="roi">ROI</option>
+          <option value="ctr">CTR</option>
+          <option value="conversions">Conversiones</option>
+          <option value="impressions">Impresiones</option>
+          <option value="clicks">Clics</option>
+        </select>
+
+        <label htmlFor="range-select" className="font-medium text-indigo-800 md:ml-4">Rango de Datos:</label>
+        <select
+          id="range-select"
+          className="p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 md:w-auto w-full"
+          value={dataRange}
+          onChange={(e) => setDataRange(e.target.value)}
+        >
+          <option value="last7days">Últimos 7 días</option>
+          <option value="last30days">Últimos 30 días</option>
+          <option value="thismonth">Este mes</option>
+          <option value="lastmonth">Mes anterior</option>
+          <option value="thisquarter">Este trimestre</option>
+        </select>
+      </div>
+
+      <div className="bg-gray-50 p-6 rounded-lg shadow-md min-h-[300px] flex items-center justify-center text-gray-500 text-lg">
+        {getChartData()}
+        {/* Aquí se integraría una librería de gráficos como Recharts o Chart.js */}
+      </div>
+
+      <div className="mt-6">
+        <h3 className="text-xl font-semibold text-indigo-700 mb-3">Insights y Sugerencias</h3>
+        <ul className="list-disc list-inside text-gray-600 space-y-2">
+          <li>El CTR general ha mejorado un 5% en la última semana, lo que indica una mejor relevancia de los anuncios.</li>
+          <li>Las conversiones desde dispositivos móviles han disminuido un 10%. Revisa la experiencia de usuario en la landing page móvil.</li>
+          <li>La campaña de retargeting en Google Ads tiene un ROI del 200%, considera aumentar su presupuesto.</li>
+        </ul>
+      </div>
+    </Card>
+  );
+};
+
+export default App;
